@@ -49,7 +49,4 @@ cleanup-vcan:
 run: $(TARGET)
 	./$(TARGET)
 
-# Debug build
-debug: CXXFLAGS += -g -DDEBUG
-debug: $(TARGET)
 

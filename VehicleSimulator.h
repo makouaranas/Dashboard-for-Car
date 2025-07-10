@@ -66,9 +66,9 @@ private:
     bool terminal_configured;
     
     // Physical constants
-    const double DRAG_COEFFICIENT = 0.32;
-    const double ROLLING_RESISTANCE = 0.015;
-    const double VEHICLE_MASS = 1450.0;
+    const double DRAG_COEFFICIENT = 0.39;
+    const double ROLLING_RESISTANCE = 0.02;
+    const double VEHICLE_MASS = 1950.0;
     const double WHEEL_RADIUS = 0.3;
     const double FINAL_DRIVE_RATIO = 3.7;
     const double MAX_ENGINE_TORQUE = 250.0;

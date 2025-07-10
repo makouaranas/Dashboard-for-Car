@@ -6,8 +6,8 @@ VehicleSimulator::VehicleSimulator() : // Constructor initializes the simulator
     engine_on(false), 
     speed_ms(0.0), 
     engine_rpm(0),
-    fuel_level(75), 
-    engine_temp(20), 
+    fuel_level(87), 
+    engine_temp(30), 
     turn_left(false),
     turn_right(false), 
     battery_ok(true), 
@@ -307,7 +307,7 @@ void VehicleSimulator::updateVehicleSimulation() {
     
     double drag_force = 0.5 * 1.225 * DRAG_COEFFICIENT * 2.2 * speed_ms * speed_ms;
     double rolling_force = ROLLING_RESISTANCE * VEHICLE_MASS * 9.81;
-    double brake_force = brake_position * 2000.0;
+    double brake_force = brake_position * 5800.0;
     
     double engine_force = 0.0;
     if (engine_on && (transmission_mode == 'D' || transmission_mode == 'R')) {
@@ -336,7 +336,7 @@ void VehicleSimulator::updateVehicleSimulation() {
         new_speed = 0.0;
     }
     
-    speed_ms = clamp(new_speed, 0.0, 60.0);
+    speed_ms = clamp(new_speed, 0.0, 70.0);
     
     double distance_m = speed_ms * dt;
     odometer = odometer +distance_m / 1000.0;
@@ -364,12 +364,11 @@ void VehicleSimulator::updateVehicleSimulation() {
     }
     
     if (engine_on) {
-        double temp_increase = (engine_rpm / 5000.0) * 0.5 + (throttle_position * 0.5);
-        double cooling = (speed_ms / 20.0) * 0.8;
-        engine_temp = clamp(
-            engine_temp + static_cast<int>(temp_increase - cooling),
-            20, 120
-        );
+        if (speed_ms>30||speed_ms<60) {
+            engine_temp =30+ speed_ms/10;
+        } else {
+            if (engine_temp > 30) engine_temp -= 1;
+        }
     } else {
         if (engine_temp > 20) engine_temp -= 1;
     }
@@ -388,7 +387,7 @@ void VehicleSimulator::updateVehicleSimulation() {
         battery_time = 0.0;
     } else {
         battery_time += dt;
-        if (battery_time > 300.0) {
+        if (battery_time > 120.0) {
             battery_ok = false;
         }
     }
